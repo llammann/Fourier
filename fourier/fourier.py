@@ -28,24 +28,39 @@ def load_signal_file():
     return None, None
 
 # Fourier əmsallarını hesabla
-def calculate_fourier(x, y):
-    N = len(x)
-    T = x[-1] - x[0]
-    delta_t = T / N
-    omega_0 = 6
+def calculate_fourier(x, y, nmax=10):
+    """
+    Computes the Fourier coefficients a0, an, bn for the signal y over time x.
 
-    a0 = (2 / N) * np.sum(y)
-    nmax = 10
+    Parameters:
+    - x: numpy array of time values
+    - y: numpy array of signal values
+    - nmax: number of harmonics to compute
+
+    Returns:
+    - a0: constant term
+    - an: list of cosine coefficients
+    - bn: list of sine coefficients
+    """
+    T = x[-1] - x[0]  # Period (assumes x covers one full period)
+    omega_0 = 2 * np.pi / T
+
+    a0 = (2 / T) * np.trapz(y, x)
+
     an = []
     bn = []
+
     for n in range(1, nmax + 1):
-        a_n = (2 / N) * np.sum(y * np.cos(n * omega_0 * x)) * delta_t
-        b_n = (2 / N) * np.sum(y * np.sin(n * omega_0 * x)) * delta_t
+        cos_term = np.cos(n * omega_0 * x)
+        sin_term = np.sin(n * omega_0 * x)
+
+        a_n = (2 / T) * np.trapz(y * cos_term, x)
+        b_n = (2 / T) * np.trapz(y * sin_term, x)
+
         an.append(a_n)
         bn.append(b_n)
 
     return a0, an, bn
-
 # Nəticələri fayla yaz
 def write_results_to_file(a0, an, bn):
     try:

@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['fourier.py'],
+    ['simulator.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='fourier',
+    name='simulator',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
