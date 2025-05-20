@@ -43,7 +43,7 @@ def calculate_fourier(x, y, nmax=10):
     - bn: list of sine coefficients
     """
     T = x[-1] - x[0]  # Period (assumes x covers one full period)
-    omega_0 = 2 * np.pi / T
+    omega_0 = 6
 
     a0 = (2 / T) * np.trapz(y, x)
 
