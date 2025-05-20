@@ -5,7 +5,7 @@ import numpy as np
 # signal.txt faylını sabit yerdən oxuma funksiyası
 def load_signal_file(): 
     try:
-        with open("../dist/signal.txt", "r") as f:
+        with open("../signal.txt", "r") as f:
             lines = f.readlines()[1:]  # başlığı atırıq
             x_vals = []
             y_vals = []
@@ -63,7 +63,7 @@ def create_gui():
     global omega_var, result_label
 
     window = tk.Tk()
-    window.title("Fourier Transform")
+    window.title("Fourier Analizi")
 
     ttk.Label(window, text="Omega_0 dəyərini daxil edin:").pack(pady=5)
 
