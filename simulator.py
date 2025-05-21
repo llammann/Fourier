@@ -24,24 +24,24 @@ class FourierApp:
 
         Label(root, text="Simulator", font=("Helvetica", 16)).grid(row=0, columnspan=4, pady=20, padx=10, sticky=W)
 
-        Label(root, text="a₀ dəyəri:").grid(row=1, column=0, sticky=W, padx=10)
+        Label(root, text="a0:", font=("Arial", 11, "bold")).grid(row=1, column=0, sticky=W, padx=10)
         self.a0_entry = Entry(root)
         self.a0_entry.insert(0, "0")
         self.a0_entry.grid(row=1, column=1)
 
-        Label(root, text="ω₀ dəyəri:").grid(row=2, column=0, sticky=W, padx=10)
+        Label(root, text="ω0:", font=("Arial", 11, "bold")).grid(row=2, column=0, sticky=W, padx=10)
         self.w0_entry = Entry(root)
         self.w0_entry.insert(0, "1")
         self.w0_entry.grid(row=2, column=1)
 
-        Label(root, text="n_max:").grid(row=3, column=0, sticky=W, padx=10)
+        Label(root, text="n_max:", font=("Arial", 11, "bold")).grid(row=3, column=0, sticky=W, padx=10)
         self.n_max_var = StringVar()
         self.n_max_var.trace_add("write", self.update_entries_live)
         self.n_max_entry = Entry(root, textvariable=self.n_max_var)
         self.n_max_entry.insert(0, "1")
         self.n_max_entry.grid(row=3, column=1)
 
-        Label(root, text="N:").grid(row=4, column=0, sticky=W, padx=10)
+        Label(root, text="N:", font=("Arial", 11, "bold")).grid(row=4, column=0, sticky=W, padx=10)
         self.n_var = StringVar()
         self.n_entry = Entry(root, textvariable=self.n_var)
         self.n_entry.insert(0, "1000")
@@ -89,14 +89,14 @@ class FourierApp:
                 self.labels[i * 2].grid(row=row, column=0)
                 self.labels[i * 2 + 1].grid(row=row, column=2)
             else:
-                a_label = Label(self.root, text=f"a{i + 1}:")
+                a_label = Label(self.root, text=f"a{i + 1}:", font=("Arial", 11, "bold"))
                 a_label.grid(row=row, column=0, padx=10)
                 a_entry = Entry(self.root)
                 a_entry.insert(0, "0")
                 a_entry.grid(row=row, column=1)
                 a_entry.bind("<KeyRelease>", lambda e: self.safe_calculate())
 
-                b_label = Label(self.root, text=f"b{i + 1}:")
+                b_label = Label(self.root, text=f"b{i + 1}:", font=("Arial", 11, "bold"))
                 b_label.grid(row=row, column=2, padx=10)
                 b_entry = Entry(self.root)
                 b_entry.insert(0, "0")
