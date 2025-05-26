@@ -2,19 +2,27 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 from tkinter import *
 from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-# ✅ Define globally so it's available anywhere
-def get_signal_file_path():
+def get_base_path():
     if getattr(sys, 'frozen', False):
-        # Running as compiled .exe → backtrack from dist/ to main folder
-        return os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..", "signal.txt"))
+        return os.path.dirname(sys.executable)  # Folder where the .exe lives
     else:
-        # Running as .py
-        return os.path.abspath(os.path.join(os.path.dirname(__file__), "signal.txt"))
+        return os.path.dirname(os.path.abspath(__file__))  # Folder where .py is
+
+def get_signal_file_path():
+    return os.path.join(get_base_path(), "signal.txt")
+
+def get_settings_file_path():
+    return os.path.join(get_base_path(), "settings.json")
+
+
+def format_number(value):
+    return str(int(value)) if float(value).is_integer() else str(value)
 
 
 class FourierApp:
@@ -22,6 +30,7 @@ class FourierApp:
         self.root = root
         self.root.title("Simulator, Proqramcı: Ləman Nəzirli")
 
+        self.settings_file_path = get_settings_file_path()
         Label(root, text="Simulator", font=("Helvetica", 16)).grid(row=0, columnspan=4, pady=20, padx=10, sticky=W)
 
         Label(root, text="a0:", font=("Arial", 11, "bold")).grid(row=1, column=0, sticky=W, padx=10)
@@ -64,6 +73,9 @@ class FourierApp:
         self.w0_entry.bind("<KeyRelease>", lambda e: self.safe_calculate())
         self.n_entry.bind("<KeyRelease>", lambda e: self.safe_calculate())
 
+        
+
+        self.load_settings()
         self.safe_calculate()
 
     def safe_calculate(self):
@@ -151,6 +163,9 @@ class FourierApp:
 
         self.plot_fourier(x, y)
 
+        self.save_settings()
+
+
     def plot_fourier(self, x, y):
         fig = plt.Figure(figsize=(6, 4), dpi=100)
         ax = fig.add_subplot(111)
@@ -167,6 +182,55 @@ class FourierApp:
         self.canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack()
+
+
+    def load_settings(self):
+         if os.path.exists(self.settings_file_path):
+             try:
+                with open(self.settings_file_path, "r") as f:
+                    data = json.load(f)
+
+                self.a0_entry.delete(0, END)
+                self.a0_entry.insert(0, format_number(data.get("a0", 0)))
+                self.w0_entry.delete(0, END)
+                self.w0_entry.insert(0, format_number(data.get("w0", "1")))
+
+                self.n_max_var.set(format_number(data.get("n_max", "1")))
+                self.n_var.set(format_number(data.get("N", "1000")))
+
+                a_list = data.get("a", [])
+                b_list = data.get("b", [])
+                self.add_entries(len(a_list))
+
+                for i, val in enumerate(a_list):
+                    self.a_entries[i].delete(0, END)
+                    self.a_entries[i].insert(0, format_number(val))
+
+                for i, val in enumerate(b_list):
+                    self.b_entries[i].delete(0, END)
+                    self.b_entries[i].insert(0, format_number(val))
+
+             except Exception as e:
+                    print("Ayarlar yüklənərkən xəta:", e)
+    
+   
+    def save_settings(self):
+        try:
+            n_max = int(self.n_max_entry.get())
+            data = {
+            "a0": float(self.a0_entry.get()),
+            "w0": float(self.w0_entry.get()),
+            "n_max": int(self.n_max_entry.get()),
+            "N": int(self.n_entry.get()),
+            "a": [float(e.get()) for e in self.a_entries[:n_max]],
+            "b": [float(e.get()) for e in self.b_entries[:n_max]],
+
+             }
+            with open(self.settings_file_path, "w") as f:
+                 json.dump(data, f, indent=4)
+        except Exception as e:
+              print("Ayarlar saxlanılarkən xəta:", e)
+
 
 
 if __name__ == '__main__':
