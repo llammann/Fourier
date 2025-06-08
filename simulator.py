@@ -169,8 +169,8 @@ class FourierApp:
     def plot_fourier(self, x, y):
         fig = plt.Figure(figsize=(6, 4), dpi=100)
         ax = fig.add_subplot(111)
-        ax.plot(x, y, label="Harmonik Siqnal")
-        ax.set_title("Harmonik Siqnal")
+        ax.plot(x, y, label="Signal")
+        # ax.set_title("Nəticə Siqnalı")
         ax.set_xlabel("x")
         ax.set_ylabel("f(x)")
         ax.grid(True)

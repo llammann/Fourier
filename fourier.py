@@ -55,9 +55,9 @@ def reconstruct_signal(x, a0, an, bn, omega_0):
 def show_plot(x, y_original, y_approx):
     fig = plt.Figure(figsize=(6, 4), dpi=100)
     ax = fig.add_subplot(111)
-    ax.plot(x, y_original, label="Orijinal Siqnal")
-    ax.plot(x, y_approx, label="Fourier Təqribi", linestyle="--")
-    ax.set_title("Harmonik Siqnal")
+    ax.plot(x, y_original, label="Original Signal")
+    ax.plot(x, y_approx, label="Fourier", linestyle="--")
+    # ax.set_title("Nəticə Siqnalı")
     ax.set_xlabel("x")
     ax.set_ylabel("f(x)")
     ax.grid(True)
